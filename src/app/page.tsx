@@ -1,17 +1,17 @@
 import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
 import ServicesSection from "@/components/ServicesSection";
 import TechnologiesSection from "@/components/TechnologiesSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
+import HeroServer from "@/components/HeroSever";
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <HeroSection />
+      <HeroServer />
       <ServicesSection />
       <TechnologiesSection />
       <ProjectsSection />
