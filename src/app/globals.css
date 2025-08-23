@@ -1,15 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* HRak Tech Brand Colors */
+  --primary-turquoise: #40DECF;
+  --primary-dark-green: #1B473F;
+  --secondary-light-turquoise: #9DF4F2;
+  --secondary-turquoise: #82CFCF;
+  --secondary-green: #4E9B94;
+  --neutral-white: #FFFFFF;
+  --neutral-light-gray: #EFEFEF;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
+  
+  /* Custom colors */
+  --color-primary: var(--primary-turquoise);
+  --color-primary-dark: var(--primary-dark-green);
+  --color-secondary: var(--secondary-light-turquoise);
+  --color-accent: var(--secondary-turquoise);
+  --color-muted: var(--neutral-light-gray);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +39,18 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), 'Montserrat', system-ui, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom utility classes */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-turquoise), var(--primary-dark-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

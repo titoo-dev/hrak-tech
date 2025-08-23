@@ -1,0 +1,113 @@
+    # PRD – Site Web HRak Tech
+
+    ## 1. Objectif du projet
+    Créer un site web vitrine professionnel pour **HRak Tech**, reflétant son expertise technologique, ses services et ses projets réalisés, tout en respectant son identité visuelle (charte graphique fournie).
+
+    ---
+
+    ## 2. Public cible
+    - **Entreprises et startups** recherchant des solutions digitales.
+    - **Clients B2B** intéressés par des services de développement web, mobile et ERP.
+    - **Partenaires potentiels** dans le domaine technologique.
+
+    ---
+
+    ## 3. Fonctionnalités principales
+
+    ### 3.1. Navigation (Navbar)
+    - Menus : **Services**, **Technologies**, **Nous contacter**.
+    - Comportement :
+    - **"Nous contacter"** reste un menu si la section **Hero** est visible.
+    - Devient **un bouton CTA** fixe (Call-to-Action) dès que l'utilisateur scroll.
+
+    ---
+
+    ### 3.2. Section Hero
+    - **Texte principal** : "Oui, votre projet est réalisable."
+    - **Description** : "Discutons ensemble pour voir ce que notre équipe peut vous apporter."
+    - **Visuel** : Image ou animation représentant l’innovation technologique.
+    - **CTA** : Bouton "Discutons" redirigeant vers **Nous contacter**.
+
+    ---
+
+    ### 3.3. Services
+    - **Développement de sites vitrines**
+    - **Développement d’applications web**
+    - **Développement d’applications mobiles (Android & iOS)**
+    - **ERP (Odoo)**
+    - Présentation sous forme de **cartes illustrées avec icônes**.
+
+    ---
+
+    ### 3.4. Technologies
+    - **Next.js**
+    - **NestJS**
+    - **Flutter**
+    - **Odoo**
+    - Présentation sous forme de **logos avec brève description**.
+
+    ---
+
+    ### 3.5. Quelques projets réalisés
+    - **Applications mobiles** : La Parole, Ariary, Devinette, Sedera, Ezango.
+    - **Web** :
+    - **Ezango** – [https://ezango.app](https://ezango.app)
+    - **L’Aigle de Libreville** – [https://laigledelibreville.com](https://laigledelibreville.com)
+    - **Mes Convictions** – [https://mesconvictions.com](https://mesconvictions.com)
+    - **ERP (Odoo)** : Gestion interne de **Im’tsar**.
+    - Format : **Portfolio avec images cliquables + liens externes**.
+
+    ---
+
+    ### 3.6. Témoignages
+    - Témoignages clients sous forme de **carrousel avec photo, nom, avis**.
+
+    ---
+
+    ### 3.7. Footer
+    - Logo **HRak Tech** (positionné à gauche).
+    - Liens : Services, Technologies, Projets, Contact.
+    - Réseaux sociaux (si disponibles).
+
+    ---
+
+    ## 4. Identité visuelle (selon charte graphique fournie)
+
+    ### 4.1. Couleurs principales
+    - **Bleu turquoise** (#40DECF) : Innovation, dynamisme.
+    - **Vert sapin foncé** (#1B473F) : Fiabilité, professionnalisme.
+
+    ### 4.2. Couleurs secondaires
+    - **Blanc (#FFFFFF)**, **Gris clair (#EFEFEF)**, **Déclinaisons vertes (#9DF4F2, #82CFCF, #4E9B94...)**.
+
+    ### 4.3. Typographies
+    - **Titres :** Rosa Sans (Bold, SemiBold, Medium).
+    - **Contenus :** Montserrat (Medium, ExtraBold).
+
+    ### 4.4. Logo
+    - Respecter l’espace protégé (épaisseur du "k" de "Rak").
+    - Utiliser versions **fond clair** et **fond sombre** selon le contexte.
+
+    ---
+
+    ## 5. Exigences techniques
+    - **Technologies recommandées :**
+    - **Frontend :** Next.js.
+    - **Backend :** NestJS (si besoin de back-office).
+    - **Responsive Design :** Desktop, tablette, mobile.
+    - **Performance :** Temps de chargement optimisé (Lazy loading images).
+    - **SEO :** Balises méta, URL propres, optimisation Lighthouse.
+
+    ---
+
+    ## 6. KPIs de réussite
+    - Taux de conversion des visiteurs vers le formulaire de contact.
+    - Temps moyen passé sur la page **Projets**.
+    - Score SEO > 90 (Google Lighthouse).
+
+    ---
+
+    ## 7. Livrables
+    - Maquettes UI respectant la charte graphique.
+    - Site web responsive et fonctionnel.
+    - Documentation d’installation et d’utilisation.
