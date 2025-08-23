@@ -21,11 +21,24 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL("https://hraktech.com"),
+  icons: {
+    icon: "/logo-with-bg.png",
+    shortcut: "/logo-with-bg.png",
+    apple: "/logo-with-bg.png",
+  },
   openGraph: {
     title: "HRak Tech - Solutions Digitales Innovantes",
     description: "Transformez vos idées en solutions digitales performantes avec HRak Tech. Développement web, mobile et ERP.",
     url: "https://hraktech.com",
     siteName: "HRak Tech",
+    images: [
+      {
+        url: "/logo-with-bg.png",
+        width: 1200,
+        height: 630,
+        alt: "HRak Tech - Solutions Digitales Innovantes",
+      },
+    ],
     locale: "fr_FR",
     type: "website",
   },
@@ -34,6 +47,7 @@ export const metadata: Metadata = {
     title: "HRak Tech - Solutions Digitales Innovantes",
     description: "Transformez vos idées en solutions digitales performantes avec HRak Tech. Développement web, mobile et ERP.",
     creator: "@hraktech",
+    images: ["/logo-with-bg.png"],
   },
   robots: {
     index: true,
