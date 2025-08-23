@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface NavButtonProps {
   onClick: () => void;
@@ -12,20 +13,20 @@ interface NavButtonProps {
 }
 
 function NavButton({ onClick, isScrolled, children, className }: NavButtonProps) {
-    return (
-        <button
-            onClick={onClick}
-            className={cn(
-                "text-sm font-medium transition-all duration-300",
-                isScrolled
-                    ? "text-gray-900 hover:text-[#1B473F] hover:bg-[#40DECF]/20"
-                    : "text-white hover:text-[#40DECF] hover:bg-white/30 drop-shadow-sm",
-                className
-            )}
-        >
-            {children}
-        </button>
-    );
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "text-sm font-medium transition-all duration-300",
+        isScrolled
+          ? "text-gray-900 hover:text-[#1B473F] hover:bg-[#40DECF]/20"
+          : "text-white hover:text-[#40DECF] hover:bg-white/30 drop-shadow-sm",
+        className
+      )}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default function Navbar() {
@@ -52,24 +53,29 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out",
-        isScrolled
-          ? "bg-white/80 backdrop-blur-xl border-b border-gray-200/20 shadow-lg shadow-black/5"
-          : "bg-transparent"
+      "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out",
+      isScrolled
+        ? "bg-white/10 backdrop-blur-xl border-b border-white/20 shadow-lg shadow-black/5"
+        : "bg-transparent"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 z-10">
-            <div className={cn(
-              "text-2xl font-bold transition-all duration-300 select-none",
-              isScrolled 
-                ? "bg-gradient-to-r from-[#40DECF] to-[#1B473F] bg-clip-text text-transparent" 
-                : "text-white drop-shadow-lg"
-            )}>
-              HRak Tech
-            </div>
+            <Image
+              src="/logo.png"
+              alt="HRak Tech"
+              width={120}
+              height={40}
+              className={cn(
+                "transition-all duration-300",
+                isScrolled
+                  ? "brightness-100"
+                  : "brightness-0 invert drop-shadow-lg"
+              )}
+              priority
+            />
           </div>
 
           {/* Desktop Navigation */}
@@ -90,7 +96,7 @@ export default function Navbar() {
                 Technologies
               </NavButton>
             </div>
-            
+
             {/* Contact CTA Button */}
             <button
               onClick={() => scrollToSection("contact")}
@@ -111,8 +117,8 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={cn(
                 "p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95",
-                isScrolled 
-                  ? "text-gray-700 bg-white/50 backdrop-blur-sm border border-gray-200/50" 
+                isScrolled
+                  ? "text-gray-700 bg-white/50 backdrop-blur-sm border border-gray-200/50"
                   : "text-white bg-white/20 backdrop-blur-sm border border-white/30"
               )}
             >

@@ -2,7 +2,7 @@
 
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import getGsap from "@/lib/gsapClient";
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
@@ -16,7 +16,16 @@ export default function HeroSection() {
   const orbsRef = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx: any = null;
+    let cleanupFns: Array<() => void> = [];
+
+    (async () => {
+      const res = await getGsap();
+      if (!res) return;
+      const { gsap, prefersReduced } = res;
+      if (prefersReduced) return; // respect user motion preferences
+
+      ctx = gsap.context(() => {
       // Set initial states
       gsap.set([badgeRef.current, ...titleWordsRef.current, realisableRef.current, subtitleRef.current, ctaRef.current, trustRef.current], {
         opacity: 0,
@@ -157,9 +166,15 @@ export default function HeroSection() {
         stagger: 0.3
       });
 
-    }, heroRef);
+      }, heroRef);
 
-    return () => ctx.revert();
+      // track revert
+      cleanupFns.push(() => ctx?.revert?.());
+    })();
+
+    return () => {
+      cleanupFns.forEach(fn => fn());
+    };
   }, []);
 
   const scrollToContact = () => {
