@@ -293,10 +293,9 @@ export default function ProjectsSection() {
               >
                 {/* Category Header */}
                 <div className="flex items-center justify-center mb-8">
-                  <div className={`relative inline-flex items-center gap-3 bg-gradient-to-r ${colorGradient} text-white px-8 py-4 rounded-full shadow-lg`}>
-                    <div className={`absolute -inset-1 bg-gradient-to-r ${glowGradient} rounded-full blur-lg opacity-75`}></div>
-                    <IconComponent className="h-6 w-6 relative z-10" />
-                    <h3 className="text-xl font-bold relative z-10">{categoryTitle}</h3>
+                  <div className={`relative inline-flex items-center gap-3 border-2 border-[#40DECF] text-[#1B473F] px-8 py-4 rounded-full bg-white/80 backdrop-blur-sm hover:bg-[#40DECF]/5 transition-colors duration-300`}>
+                    <IconComponent className="h-6 w-6 text-[#40DECF]" />
+                    <h3 className="text-xl font-bold">{categoryTitle}</h3>
                   </div>
                 </div>
 
