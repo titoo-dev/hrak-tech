@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { ExternalLink, Smartphone, Globe, Building, Sparkles, Star, ArrowRight } from "lucide-react";
-import getGsap from "@/lib/gsapClient";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projects = {
   mobile: [
@@ -71,144 +75,134 @@ export default function ProjectsSection() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const starsRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    let ctx: any = null;
-    const cleanupFns: Array<() => void> = [];
+  useGSAP(() => {
+    // Check for reduced motion preference
+    const prefersReduced = typeof window !== 'undefined' && 
+      window.matchMedia && 
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReduced) return;
 
-    (async () => {
-      const res = await getGsap();
-      if (!res) return;
-      const { gsap, prefersReduced } = res;
-      if (prefersReduced) return;
+    // Set initial states
+    gsap.set([titleRef.current, subtitleRef.current], {
+      opacity: 0,
+      y: 50
+    });
 
-      ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, subtitleRef.current], {
-        opacity: 0,
-        y: 50
-      });
+    gsap.set(categoriesRef.current, {
+      opacity: 0,
+      y: 80,
+      scale: 0.9
+    });
 
-      gsap.set(categoriesRef.current, {
-        opacity: 0,
-        y: 80,
-        scale: 0.9
-      });
+    gsap.set(projectCardsRef.current, {
+      opacity: 0,
+      y: 30
+    });
 
-      gsap.set(projectCardsRef.current, {
-        opacity: 0,
-        y: 30
-      });
+    gsap.set(ctaRef.current, {
+      opacity: 0,
+      y: 40
+    });
 
-      gsap.set(ctaRef.current, {
-        opacity: 0,
-        y: 40
-      });
+    // Floating stars animation
+    starsRef.current.forEach((star, index) => {
+      if (star) {
+        gsap.to(star, {
+          y: `random(-20, -40)`,
+          x: `random(-15, 15)`,
+          rotation: `random(-90, 90)`,
+          scale: `random(0.8, 1.2)`,
+          duration: `random(3, 6)`,
+          ease: "power2.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: index * 0.3
+        });
+      }
+    });
 
-      // Floating stars animation
-      starsRef.current.forEach((star, index) => {
-        if (star) {
-          gsap.to(star, {
-            y: `random(-20, -40)`,
-            x: `random(-15, 15)`,
-            rotation: `random(-90, 90)`,
-            scale: `random(0.8, 1.2)`,
-            duration: `random(3, 6)`,
-            ease: "power2.inOut",
-            repeat: -1,
-            yoyo: true,
-            delay: index * 0.3
-          });
-        }
-      });
+    // Floating orbs animations
+    orbsRef.current.forEach((orb, index) => {
+      if (orb) {
+        gsap.to(orb, {
+          y: index % 2 === 0 ? -30 : -35,
+          x: index % 3 === 0 ? 25 : -20,
+          rotation: index % 2 === 0 ? 8 : -5,
+          duration: 6 + index * 1.5,
+          ease: "power2.inOut",
+          repeat: -1,
+          yoyo: true
+        });
+      }
+    });
 
-      // Floating orbs animations
-      orbsRef.current.forEach((orb, index) => {
-        if (orb) {
-          gsap.to(orb, {
-            y: index % 2 === 0 ? -30 : -35,
-            x: index % 3 === 0 ? 25 : -20,
-            rotation: index % 2 === 0 ? 8 : -5,
-            duration: 6 + index * 1.5,
-            ease: "power2.inOut",
-            repeat: -1,
-            yoyo: true
-          });
-        }
-      });
+    // Background gradient animation
+    gsap.to(".projects-bg-gradient", {
+      backgroundPosition: "100% 50%",
+      duration: 25,
+      ease: "none",
+      repeat: -1,
+      yoyo: true
+    });
 
-      // Background gradient animation
-      gsap.to(".projects-bg-gradient", {
-        backgroundPosition: "100% 50%",
-        duration: 25,
-        ease: "none",
-        repeat: -1,
-        yoyo: true
-      });
+    // Main scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        end: "bottom 30%",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-      // Main scroll-triggered animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          end: "bottom 30%",
-          toggleActions: "play none none reverse"
-        }
-      });
+    // Title and subtitle animation
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "back.out(1.7)"
+    })
+    .to(subtitleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.6");
 
-      // Title and subtitle animation
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "back.out(1.7)"
-      })
-      .to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.6");
+    // Categories animation
+    categoriesRef.current.forEach((category, index) => {
+      if (category) {
+        tl.to(category, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        }, `-=${0.6 - index * 0.2}`);
+      }
+    });
 
-      // Categories animation
-      categoriesRef.current.forEach((category, index) => {
-        if (category) {
-          tl.to(category, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: "back.out(1.7)"
-          }, `-=${0.6 - index * 0.2}`);
-        }
-      });
+    // Project cards animation - simple staggered fade-in
+    projectCardsRef.current.forEach((card, index) => {
+      if (card) {
+        tl.to(card, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out"
+        }, `-=${0.3 - index * 0.06}`);
+      }
+    });
 
-      // Project cards animation - simple staggered fade-in
-      projectCardsRef.current.forEach((card, index) => {
-        if (card) {
-          tl.to(card, {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            ease: "power2.out"
-          }, `-=${0.3 - index * 0.06}`);
-        }
-      });
-
-      // CTA animation
-      tl.to(ctaRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power2.out"
-      }, "-=0.2");
-
-      }, sectionRef);
-
-      cleanupFns.push(() => ctx?.revert?.());
-    })();
-
-    return () => cleanupFns.forEach(fn => fn());
-  }, []);
+    // CTA animation
+    tl.to(ctaRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.2");
+  }, { scope: sectionRef });
 
   return (
     <section 

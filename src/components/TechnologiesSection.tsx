@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Sparkles, Code, Zap, Layers } from "lucide-react";
-import getGsap from "@/lib/gsapClient";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const technologies = [
   {
@@ -48,139 +52,124 @@ export default function TechnologiesSection() {
   const additionalInfoRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    let ctx: any = null;
-    let cleanupFns: Array<() => void> = [];
+  useGSAP(() => {
+    // Check for reduced motion preference
+    const prefersReduced = typeof window !== 'undefined' && 
+      window.matchMedia && 
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReduced) return;
 
-    (async () => {
-      const res = await getGsap();
-      if (!res) return;
-      const { gsap, ScrollTrigger, prefersReduced } = res;
-      if (prefersReduced) return; // respect user motion preferences
+    // Set initial states
+    gsap.set([titleRef.current, subtitleRef.current], {
+      opacity: 0,
+      y: 30
+    });
 
-      gsap.registerPlugin?.(ScrollTrigger);
+    gsap.set(cardsRef.current, {
+      opacity: 0,
+      y: 50
+    });
 
-      ctx = gsap.context(() => {
-        // Set initial states
-        gsap.set([titleRef.current, subtitleRef.current], {
-          opacity: 0,
-          y: 30
-        });
+    gsap.set(additionalInfoRef.current, {
+      opacity: 0,
+      y: 30
+    });
 
-        gsap.set(cardsRef.current, {
-          opacity: 0,
-          y: 50
-        });
-
-        gsap.set(additionalInfoRef.current, {
-          opacity: 0,
-          y: 30
-        });
-
-        // Floating particles animation
-        particlesRef.current.forEach((particle, index) => {
-          if (particle) {
-            gsap.to(particle, {
-              y: `random(-30, -50)`,
-              x: `random(-20, 20)`,
-              rotation: `random(-180, 180)`,
-              duration: `random(3, 6)`,
-              ease: "power2.inOut",
-              repeat: -1,
-              yoyo: true,
-              delay: index * 0.2
-            });
-          }
-        });
-
-        // Floating orbs animations
-        orbsRef.current.forEach((orb, index) => {
-          if (orb) {
-            gsap.to(orb, {
-              y: index % 2 === 0 ? -25 : -30,
-              x: index % 3 === 0 ? 20 : -15,
-              rotation: index % 2 === 0 ? 5 : -3,
-              duration: 5 + index * 1.2,
-              ease: "power2.inOut",
-              repeat: -1,
-              yoyo: true
-            });
-          }
-        });
-
-        // Background gradient animation
-        gsap.to(".tech-bg-gradient", {
-          backgroundPosition: "100% 50%",
-          duration: 20,
-          ease: "none",
-          repeat: -1,
-          yoyo: true
-        });
-
-        // Code animation
-        gsap.to(".floating-code", {
-          y: -20,
-          duration: 3,
+    // Floating particles animation
+    particlesRef.current.forEach((particle, index) => {
+      if (particle) {
+        gsap.to(particle, {
+          y: `random(-30, -50)`,
+          x: `random(-20, 20)`,
+          rotation: `random(-180, 180)`,
+          duration: `random(3, 6)`,
           ease: "power2.inOut",
           repeat: -1,
           yoyo: true,
-          stagger: 0.5
+          delay: index * 0.2
         });
+      }
+    });
 
-        // Main scroll-triggered animation
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            end: "bottom 30%",
-            toggleActions: "play none none reverse"
-          }
+    // Floating orbs animations
+    orbsRef.current.forEach((orb, index) => {
+      if (orb) {
+        gsap.to(orb, {
+          y: index % 2 === 0 ? -25 : -30,
+          x: index % 3 === 0 ? 20 : -15,
+          rotation: index % 2 === 0 ? 5 : -3,
+          duration: 5 + index * 1.2,
+          ease: "power2.inOut",
+          repeat: -1,
+          yoyo: true
         });
+      }
+    });
 
-        // Title and subtitle animation
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out"
-        })
-          .to(subtitleRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out"
-          }, "-=0.3");
+    // Background gradient animation
+    gsap.to(".tech-bg-gradient", {
+      backgroundPosition: "100% 50%",
+      duration: 20,
+      ease: "none",
+      repeat: -1,
+      yoyo: true
+    });
 
-        // Cards animation - simple fade and slide up
-        cardsRef.current.forEach((card, index) => {
-          if (card) {
-            tl.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.6,
-              ease: "power2.out"
-            }, `-=${0.4 - index * 0.1}`);
-          }
-        });
+    // Code animation
+    gsap.to(".floating-code", {
+      y: -20,
+      duration: 3,
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true,
+      stagger: 0.5
+    });
 
-        // Additional info animation
-        tl.to(additionalInfoRef.current, {
+    // Main scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        end: "bottom 30%",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    // Title and subtitle animation
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    })
+      .to(subtitleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out"
+      }, "-=0.3");
+
+    // Cards animation - simple fade and slide up
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        tl.to(card, {
           opacity: 1,
           y: 0,
           duration: 0.6,
           ease: "power2.out"
-        }, "-=0.2");
+        }, `-=${0.4 - index * 0.1}`);
+      }
+    });
 
-      }, sectionRef);
-
-      // track revert
-      cleanupFns.push(() => ctx?.revert?.());
-    })();
-
-    return () => {
-      cleanupFns.forEach(fn => fn());
-    };
-  }, []);
+    // Additional info animation
+    tl.to(additionalInfoRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.2");
+  }, { scope: sectionRef });
 
   return (
     <section

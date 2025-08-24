@@ -1,8 +1,9 @@
 "use client";
 
 import { ArrowRight, Sparkles } from "lucide-react";
-import { useEffect, useRef } from "react";
-import getGsap from "@/lib/gsapClient";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
@@ -15,167 +16,154 @@ export default function HeroSection() {
   const trustRef = useRef<HTMLDivElement>(null);
   const orbsRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    let ctx: any = null;
-    let cleanupFns: Array<() => void> = [];
+  useGSAP(() => {
+    // Check for reduced motion preference
+    const prefersReduced = typeof window !== 'undefined' && 
+      window.matchMedia && 
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReduced) return;
 
-    (async () => {
-      const res = await getGsap();
-      if (!res) return;
-      const { gsap, prefersReduced } = res;
-      if (prefersReduced) return; // respect user motion preferences
+    // Set initial states
+    gsap.set([badgeRef.current, ...titleWordsRef.current, realisableRef.current, subtitleRef.current, ctaRef.current, trustRef.current], {
+      opacity: 0,
+      y: 50
+    });
+    
+    gsap.set(underlineRef.current, {
+      scaleX: 0
+    });
 
-      ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([badgeRef.current, ...titleWordsRef.current, realisableRef.current, subtitleRef.current, ctaRef.current, trustRef.current], {
-        opacity: 0,
-        y: 50
-      });
-      
-      gsap.set(underlineRef.current, {
-        scaleX: 0
-      });
+    // Background gradient animation
+    gsap.to(".bg-gradient-animated", {
+      backgroundPosition: "100% 50%",
+      duration: 8,
+      ease: "none",
+      repeat: -1,
+      yoyo: true
+    });
 
-      // Background gradient animation
-      gsap.to(".bg-gradient-animated", {
-        backgroundPosition: "100% 50%",
-        duration: 8,
-        ease: "none",
-        repeat: -1,
-        yoyo: true
-      });
+    // Floating orbs animations
+    orbsRef.current.forEach((orb, index) => {
+      if (orb) {
+        gsap.to(orb, {
+          y: index % 2 === 0 ? -30 : -25,
+          rotation: index % 2 === 0 ? 5 : -3,
+          duration: 6 + index * 2,
+          ease: "power2.inOut",
+          repeat: -1,
+          yoyo: true
+        });
+      }
+    });
 
-      // Floating orbs animations
-      orbsRef.current.forEach((orb, index) => {
-        if (orb) {
-          gsap.to(orb, {
-            y: index % 2 === 0 ? -30 : -25,
-            rotation: index % 2 === 0 ? 5 : -3,
-            duration: 6 + index * 2,
-            ease: "power2.inOut",
-            repeat: -1,
-            yoyo: true
-          });
-        }
-      });
+    // Pulse animation for center orb
+    gsap.to(".center-orb", {
+      opacity: 0.5,
+      scale: 1.05,
+      duration: 4,
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true
+    });
 
-      // Pulse animation for center orb
-      gsap.to(".center-orb", {
-        opacity: 0.5,
-        scale: 1.05,
-        duration: 4,
-        ease: "power2.inOut",
-        repeat: -1,
-        yoyo: true
-      });
+    // Bounce animations for small orbs
+    gsap.to(".small-orb-1", {
+      y: -10,
+      duration: 3,
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true
+    });
 
-      // Bounce animations for small orbs
-      gsap.to(".small-orb-1", {
-        y: -10,
-        duration: 3,
-        ease: "power2.inOut",
-        repeat: -1,
-        yoyo: true
-      });
+    gsap.to(".small-orb-2", {
+      y: -8,
+      duration: 3,
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true,
+      delay: 1
+    });
 
-      gsap.to(".small-orb-2", {
-        y: -8,
-        duration: 3,
-        ease: "power2.inOut",
-        repeat: -1,
-        yoyo: true,
-        delay: 1
-      });
+    // Main animation timeline
+    const tl = gsap.timeline({ delay: 0.5 });
 
-      // Main animation timeline
-      const tl = gsap.timeline({ delay: 0.5 });
+    // Badge animation
+    tl.to(badgeRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "back.out(1.7)"
+    })
 
-      // Badge animation
-      tl.to(badgeRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "back.out(1.7)"
-      })
+    // Title words animation (staggered)
+    .to(titleWordsRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      stagger: 0.2
+    }, "-=0.5")
 
-      // Title words animation (staggered)
-      .to(titleWordsRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        stagger: 0.2
-      }, "-=0.5")
+    // "réalisable" word animation
+    .to(realisableRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "back.out(1.7)"
+    }, "-=0.2")
 
-      // "réalisable" word animation
-      .to(realisableRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "back.out(1.7)"
-      }, "-=0.2")
+    // Underline animation
+    .to(underlineRef.current, {
+      scaleX: 1,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.3")
 
-      // Underline animation
-      .to(underlineRef.current, {
-        scaleX: 1,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.3")
+    // Subtitle animation
+    .to(subtitleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.4")
 
-      // Subtitle animation
-      .to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.4")
+    // CTA button animation
+    .to(ctaRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "back.out(1.7)"
+    }, "-=0.2")
 
-      // CTA button animation
-      .to(ctaRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, "-=0.2")
+    // Trust indicators animation
+    .to(trustRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.2");
 
-      // Trust indicators animation
-      .to(trustRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.2");
+    // Gradient text animation for "réalisable"
+    gsap.to(".gradient-text", {
+      backgroundPosition: "100% 50%",
+      duration: 3,
+      ease: "none",
+      repeat: -1,
+      yoyo: true
+    });
 
-      // Gradient text animation for "réalisable"
-      gsap.to(".gradient-text", {
-        backgroundPosition: "100% 50%",
-        duration: 3,
-        ease: "none",
-        repeat: -1,
-        yoyo: true
-      });
-
-      // Pulse animation for trust indicators dots
-      gsap.to(".trust-dot", {
-        opacity: 0.3,
-        scale: 0.8,
-        duration: 2,
-        ease: "power2.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.3
-      });
-
-      }, heroRef);
-
-      // track revert
-      cleanupFns.push(() => ctx?.revert?.());
-    })();
-
-    return () => {
-      cleanupFns.forEach(fn => fn());
-    };
-  }, []);
+    // Pulse animation for trust indicators dots
+    gsap.to(".trust-dot", {
+      opacity: 0.3,
+      scale: 0.8,
+      duration: 2,
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true,
+      stagger: 0.3
+    });
+  }, { scope: heroRef });
 
   const scrollToContact = () => {
     const element = document.getElementById("contact");

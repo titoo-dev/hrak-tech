@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Globe, Smartphone, Monitor, Settings, Sparkles } from "lucide-react";
-import getGsap from "@/lib/gsapClient";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = [
   {
@@ -43,113 +47,98 @@ export default function ServicesSection() {
   const orbsRef = useRef<HTMLDivElement[]>([]);
   const ctaRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    let ctx: any = null;
-    let cleanupFns: Array<() => void> = [];
+  useGSAP(() => {
+    // Check for reduced motion preference
+    const prefersReduced = typeof window !== 'undefined' && 
+      window.matchMedia && 
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReduced) return;
 
-    (async () => {
-      const res = await getGsap();
-      if (!res) return;
-      const { gsap, ScrollTrigger, prefersReduced } = res;
-      if (prefersReduced) return; // respect user motion preferences
+    // Set initial states
+    gsap.set([titleRef.current, subtitleRef.current], {
+      opacity: 0,
+      y: 30
+    });
 
-      gsap.registerPlugin?.(ScrollTrigger);
+    gsap.set(cardsRef.current, {
+      opacity: 0,
+      y: 40
+    });
 
-      ctx = gsap.context(() => {
-        // Set initial states
-        gsap.set([titleRef.current, subtitleRef.current], {
-          opacity: 0,
-          y: 30
-        });
+    gsap.set(ctaRef.current, {
+      opacity: 0,
+      y: 20
+    });
 
-        gsap.set(cardsRef.current, {
-          opacity: 0,
-          y: 40
-        });
-
-        gsap.set(ctaRef.current, {
-          opacity: 0,
-          y: 20
-        });
-
-        // Floating orbs animations
-        orbsRef.current.forEach((orb, index) => {
-          if (orb) {
-            gsap.to(orb, {
-              y: index % 2 === 0 ? -20 : -25,
-              x: index % 3 === 0 ? 15 : -10,
-              rotation: index % 2 === 0 ? 3 : -2,
-              duration: 4 + index * 1.5,
-              ease: "power2.inOut",
-              repeat: -1,
-              yoyo: true
-            });
-          }
-        });
-
-        // Background gradient animation
-        gsap.to(".services-bg-gradient", {
-          backgroundPosition: "100% 50%",
-          duration: 15,
-          ease: "none",
+    // Floating orbs animations
+    orbsRef.current.forEach((orb, index) => {
+      if (orb) {
+        gsap.to(orb, {
+          y: index % 2 === 0 ? -20 : -25,
+          x: index % 3 === 0 ? 15 : -10,
+          rotation: index % 2 === 0 ? 3 : -2,
+          duration: 4 + index * 1.5,
+          ease: "power2.inOut",
           repeat: -1,
           yoyo: true
         });
+      }
+    });
 
-        // Main scroll-triggered animation
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            end: "bottom 30%",
-            toggleActions: "play none none reverse"
-          }
-        });
+    // Background gradient animation
+    gsap.to(".services-bg-gradient", {
+      backgroundPosition: "100% 50%",
+      duration: 15,
+      ease: "none",
+      repeat: -1,
+      yoyo: true
+    });
 
-        // Title and subtitle animation
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out"
-        })
-          .to(subtitleRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out"
-          }, "-=0.3");
+    // Main scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        end: "bottom 30%",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-        // Cards animation - simple staggered fade-in from bottom
-        cardsRef.current.forEach((card, index) => {
-          if (card) {
-            tl.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.6,
-              ease: "power2.out"
-            }, `-=${0.4 - index * 0.08}`);
-          }
-        });
+    // Title and subtitle animation
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    })
+      .to(subtitleRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out"
+      }, "-=0.3");
 
-        // CTA animation
-        tl.to(ctaRef.current, {
+    // Cards animation - simple staggered fade-in from bottom
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        tl.to(card, {
           opacity: 1,
           y: 0,
           duration: 0.6,
           ease: "power2.out"
-        }, "-=0.2");
+        }, `-=${0.4 - index * 0.08}`);
+      }
+    });
 
-      }, sectionRef);
-
-      // track revert
-      cleanupFns.push(() => ctx?.revert?.());
-    })();
-
-    return () => {
-      cleanupFns.forEach(fn => fn());
-    };
-  }, []);
+    // CTA animation
+    tl.to(ctaRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.2");
+  }, { scope: sectionRef });
 
   return (
     <section

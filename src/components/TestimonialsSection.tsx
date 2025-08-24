@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Star, ChevronLeft, ChevronRight, Quote, Sparkles, Users } from "lucide-react";
+import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -59,119 +60,121 @@ export default function TestimonialsSection() {
   const orbsRef = useRef<HTMLDivElement[]>([]);
   const starsRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, subtitleRef.current], {
-        opacity: 0,
-        y: 50
-      });
+  useGSAP(() => {
+    // Check for reduced motion preference
+    const prefersReduced = typeof window !== 'undefined' && 
+      window.matchMedia && 
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReduced) return;
 
-      gsap.set([cardRef.current, dotsRef.current, previewRef.current], {
-        opacity: 0,
-        y: 80,
-        scale: 0.9
-      });
+    // Set initial states
+    gsap.set([titleRef.current, subtitleRef.current], {
+      opacity: 0,
+      y: 50
+    });
 
-      // Floating stars animation
-      starsRef.current.forEach((star, index) => {
-        if (star) {
-          gsap.to(star, {
-            y: `random(-25, -45)`,
-            x: `random(-20, 20)`,
-            rotation: `random(-90, 90)`,
-            scale: `random(0.8, 1.3)`,
-            duration: `random(4, 7)`,
-            ease: "power2.inOut",
-            repeat: -1,
-            yoyo: true,
-            delay: index * 0.4
-          });
-        }
-      });
+    gsap.set([cardRef.current, dotsRef.current, previewRef.current], {
+      opacity: 0,
+      y: 80,
+      scale: 0.9
+    });
 
-      // Floating orbs animations
-      orbsRef.current.forEach((orb, index) => {
-        if (orb) {
-          gsap.to(orb, {
-            y: index % 2 === 0 ? -35 : -40,
-            x: index % 3 === 0 ? 30 : -25,
-            rotation: index % 2 === 0 ? 10 : -8,
-            duration: 7 + index * 1.8,
-            ease: "power2.inOut",
-            repeat: -1,
-            yoyo: true
-          });
-        }
-      });
+    // Floating stars animation
+    starsRef.current.forEach((star, index) => {
+      if (star) {
+        gsap.to(star, {
+          y: `random(-25, -45)`,
+          x: `random(-20, 20)`,
+          rotation: `random(-90, 90)`,
+          scale: `random(0.8, 1.3)`,
+          duration: `random(4, 7)`,
+          ease: "power2.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: index * 0.4
+        });
+      }
+    });
 
-      // Background gradient animation
-      gsap.to(".testimonials-bg-gradient", {
-        backgroundPosition: "100% 50%",
-        duration: 30,
-        ease: "none",
-        repeat: -1,
-        yoyo: true
-      });
+    // Floating orbs animations
+    orbsRef.current.forEach((orb, index) => {
+      if (orb) {
+        gsap.to(orb, {
+          y: index % 2 === 0 ? -35 : -40,
+          x: index % 3 === 0 ? 30 : -25,
+          rotation: index % 2 === 0 ? 10 : -8,
+          duration: 7 + index * 1.8,
+          ease: "power2.inOut",
+          repeat: -1,
+          yoyo: true
+        });
+      }
+    });
 
-      // Pulse animation for quotes
-      gsap.to(".floating-quote", {
-        scale: 1.1,
-        opacity: 0.8,
-        duration: 4,
-        ease: "power2.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 1
-      });
+    // Background gradient animation
+    gsap.to(".testimonials-bg-gradient", {
+      backgroundPosition: "100% 50%",
+      duration: 30,
+      ease: "none",
+      repeat: -1,
+      yoyo: true
+    });
 
-      // Main scroll-triggered animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          end: "bottom 30%",
-          toggleActions: "play none none reverse"
-        }
-      });
+    // Pulse animation for quotes
+    gsap.to(".floating-quote", {
+      scale: 1.1,
+      opacity: 0.8,
+      duration: 4,
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true,
+      stagger: 1
+    });
 
-      // Title and subtitle animation
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "back.out(1.7)"
-      })
-      .to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.6");
+    // Main scroll-triggered animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        end: "bottom 30%",
+        toggleActions: "play none none reverse"
+      }
+    });
 
-      // Main card animation
-      tl.to(cardRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1,
-        ease: "back.out(1.7)"
-      }, "-=0.3");
+    // Title and subtitle animation
+    tl.to(titleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "back.out(1.7)"
+    })
+    .to(subtitleRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.6");
 
-      // Dots and preview animations
-      tl.to([dotsRef.current, previewRef.current], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        stagger: 0.1
-      }, "-=0.5");
+    // Main card animation
+    tl.to(cardRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1,
+      ease: "back.out(1.7)"
+    }, "-=0.3");
 
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    // Dots and preview animations
+    tl.to([dotsRef.current, previewRef.current], {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+      stagger: 0.1
+    }, "-=0.5");
+  }, { scope: sectionRef });
 
   // Testimonial change animation
   useEffect(() => {
