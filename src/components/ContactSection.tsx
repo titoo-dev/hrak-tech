@@ -1,8 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Mail, Phone, MapPin, CheckCircle, Send, Sparkles, MessageCircle, User, Building } from "lucide-react";
-import getGsap from "@/lib/gsapClient";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { Select } from "@radix-ui/react-select";
+import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -15,142 +21,9 @@ export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const contactInfoRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<HTMLDivElement>(null);
-  const orbsRef = useRef<HTMLDivElement[]>([]);
-  const particlesRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    let ctx: any = null;
-    const cleanupFns: Array<() => void> = [];
 
-    (async () => {
-      const res = await getGsap();
-      if (!res) return;
-      const { gsap, prefersReduced } = res;
-      if (prefersReduced) return;
 
-      ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, subtitleRef.current], {
-        opacity: 0,
-        y: 50
-      });
-
-      gsap.set([contactInfoRef.current, formRef.current], {
-        opacity: 0,
-        y: 80,
-        scale: 0.95
-      });
-
-      // Floating particles animation
-      particlesRef.current.forEach((particle, index) => {
-        if (particle) {
-          gsap.to(particle, {
-            y: `random(-40, -60)`,
-            x: `random(-30, 30)`,
-            rotation: `random(-180, 180)`,
-            scale: `random(0.8, 1.2)`,
-            duration: `random(4, 8)`,
-            ease: "power2.inOut",
-            repeat: -1,
-            yoyo: true,
-            delay: index * 0.3
-          });
-        }
-      });
-
-      // Floating orbs animations
-      orbsRef.current.forEach((orb, index) => {
-        if (orb) {
-          gsap.to(orb, {
-            y: index % 2 === 0 ? -40 : -45,
-            x: index % 3 === 0 ? 35 : -30,
-            rotation: index % 2 === 0 ? 12 : -10,
-            duration: 8 + index * 2,
-            ease: "power2.inOut",
-            repeat: -1,
-            yoyo: true
-          });
-        }
-      });
-
-      // Background gradient animation
-      gsap.to(".contact-bg-gradient", {
-        backgroundPosition: "100% 50%",
-        duration: 35,
-        ease: "none",
-        repeat: -1,
-        yoyo: true
-      });
-
-      // Pulse animation for contact methods
-      gsap.to(".contact-icon", {
-        scale: 1.1,
-        duration: 2,
-        ease: "power2.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.5
-      });
-
-      // Main scroll-triggered animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          end: "bottom 30%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Title and subtitle animation
-      tl.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "back.out(1.7)"
-      })
-      .to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      }, "-=0.6");
-
-      // Contact info and form animation
-      tl.to([contactInfoRef.current, formRef.current], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1,
-        ease: "back.out(1.7)",
-        stagger: 0.2
-      }, "-=0.4");
-
-      // Form field focus/blur animations - attach per element and track for cleanup
-      const formFields = Array.from(document.querySelectorAll('.form-field')) as HTMLElement[];
-      formFields.forEach((field) => {
-        const onFocus = () => gsap.to(field, { scale: 1.02, duration: 0.3, ease: "power2.out" });
-        const onBlur = () => gsap.to(field, { scale: 1, duration: 0.3, ease: "power2.out" });
-        field.addEventListener('focus', onFocus);
-        field.addEventListener('blur', onBlur);
-        cleanupFns.push(() => {
-          field.removeEventListener('focus', onFocus);
-          field.removeEventListener('blur', onBlur);
-        });
-      });
-
-      }, sectionRef);
-
-      cleanupFns.push(() => ctx?.revert?.());
-    })();
-
-    return () => cleanupFns.forEach(fn => fn());
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -163,14 +36,14 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     console.log("Form submitted:", formData);
     setIsSubmitted(true);
     setIsSubmitting(false);
-    
+
     // Reset form after 4 seconds
     setTimeout(() => {
       setIsSubmitted(false);
@@ -189,7 +62,7 @@ export default function ContactSection() {
       <section id="contact" className="relative py-20 overflow-hidden bg-gradient-to-br from-[#0a1628] via-[#1B473F] to-[#2d5a52]">
         {/* Success Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#40DECF]/10 via-transparent to-[#9DF4F2]/10"></div>
-        
+
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-bounce mb-8">
             <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-[#40DECF] to-[#82CFCF] rounded-full shadow-2xl">
@@ -197,7 +70,7 @@ export default function ContactSection() {
             </div>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Message envoyé avec 
+            Message envoyé avec
             <span className="block bg-gradient-to-r from-[#40DECF] to-[#9DF4F2] bg-clip-text text-transparent">
               succès !
             </span>
@@ -214,28 +87,18 @@ export default function ContactSection() {
   }
 
   return (
-    <section 
-      ref={sectionRef}
-      id="contact" 
+    <section
+      id="contact"
       className="relative py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-gray-100"
     >
-      {/* Animated Background Gradient */}
-      <div className="contact-bg-gradient absolute inset-0 bg-gradient-to-r from-[#40DECF]/5 via-transparent to-[#9DF4F2]/5" style={{backgroundSize: '200% 200%'}}></div>
-      
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#40DECF]/5 via-transparent to-[#9DF4F2]/5"></div>
+
       {/* Beautiful Blur Orbs */}
       <div className="absolute inset-0 overflow-hidden">
-        <div 
-          ref={el => { if (el) orbsRef.current[0] = el; }}
-          className="absolute top-32 right-20 w-96 h-96 bg-gradient-to-r from-[#40DECF]/10 to-[#9DF4F2]/8 rounded-full blur-3xl"
-        ></div>
-        <div 
-          ref={el => { if (el) orbsRef.current[1] = el; }}
-          className="absolute bottom-40 left-32 w-80 h-80 bg-gradient-to-bl from-[#82CFCF]/8 to-transparent rounded-full blur-2xl"
-        ></div>
-        <div 
-          ref={el => { if (el) orbsRef.current[2] = el; }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-[#4E9B94]/6 to-transparent rounded-full blur-3xl"
-        ></div>
+        <div className="absolute top-32 right-20 w-96 h-96 bg-gradient-to-r from-[#40DECF]/10 to-[#9DF4F2]/8 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-40 left-32 w-80 h-80 bg-gradient-to-bl from-[#82CFCF]/8 to-transparent rounded-full blur-2xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-[#4E9B94]/6 to-transparent rounded-full blur-3xl"></div>
       </div>
 
       {/* Grid Pattern */}
@@ -260,67 +123,61 @@ export default function ContactSection() {
             </div>
           </div>
 
-          <h2 
-            ref={titleRef}
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1B473F] mb-6 leading-tight"
-          >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1B473F] mb-6 leading-tight">
             Discutons de
             <span className="block bg-gradient-to-r from-[#40DECF] to-[#82CFCF] bg-clip-text text-transparent">
               Votre Projet
             </span>
             <span className="text-3xl md:text-4xl lg:text-5xl block mt-2">Ensemble</span>
           </h2>
-          
-          <p 
-            ref={subtitleRef}
-            className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
-          >
-            Prêt à concrétiser votre projet ? Contactez-nous pour discuter de vos besoins et découvrir comment nous pouvons vous aider à 
+
+          <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            Prêt à concrétiser votre projet ? Contactez-nous pour discuter de vos besoins et découvrir comment nous pouvons vous aider à
             <span className="text-[#40DECF] font-medium"> réussir votre transformation digitale</span>.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Contact Information */}
-          <div ref={contactInfoRef} className="space-y-8">
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200/50">
+          <div className="space-y-8">
+            <Card className="bg-white/60 backdrop-blur-sm p-8">
               <h3 className="text-2xl font-bold text-[#1B473F] mb-6 flex items-center gap-3">
                 <MessageCircle className="h-6 w-6 text-[#40DECF]" />
                 Parlons de votre projet
               </h3>
               <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                Que vous ayez une idée précise ou que vous souhaitiez simplement explorer les possibilités, 
+                Que vous ayez une idée précise ou que vous souhaitiez simplement explorer les possibilités,
                 notre équipe est là pour vous accompagner à chaque étape de votre transformation digitale.
               </p>
 
               {/* Contact Methods */}
               <div className="space-y-6">
-                <div className="flex items-center group">
-                  <div className="contact-icon bg-gradient-to-br from-[#40DECF] to-[#82CFCF] p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <div className="flex items-center">
+                  <div className="bg-[#40DECF] p-3 rounded-xl mr-4">
                     <Mail className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-[#1B473F] group-hover:text-[#40DECF] transition-colors duration-300">Email</h4>
+                    <h4 className="font-semibold text-[#1B473F]">Email</h4>
                     <p className="text-gray-600">contact@hraktech.com</p>
                   </div>
                 </div>
 
-                <div className="flex items-center group">
-                  <div className="contact-icon bg-gradient-to-br from-[#1B473F] to-[#4E9B94] p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <div className="flex items-center">
+                  <div className="bg-[#1B473F] p-3 rounded-xl mr-4">
                     <Phone className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-[#1B473F] group-hover:text-[#40DECF] transition-colors duration-300">Téléphone</h4>
+                    <h4 className="font-semibold text-[#1B473F]">Téléphone</h4>
                     <p className="text-gray-600">+33 1 23 45 67 89</p>
                   </div>
                 </div>
 
-                <div className="flex items-center group">
-                  <div className="contact-icon bg-gradient-to-br from-[#4E9B94] to-[#9DF4F2] p-3 rounded-xl mr-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <div className="flex items-center">
+                  <div className="bg-[#4E9B94] p-3 rounded-xl mr-4">
                     <MapPin className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-[#1B473F] group-hover:text-[#40DECF] transition-colors duration-300">Localisation</h4>
+                    <h4 className="font-semibold text-[#1B473F]">Localisation</h4>
                     <p className="text-gray-600">Paris, France</p>
                   </div>
                 </div>
@@ -336,14 +193,14 @@ export default function ContactSection() {
                   Nous nous engageons à vous répondre rapidement pour que votre projet puisse démarrer dans les meilleures conditions.
                 </p>
               </div>
-            </div>
+            </Card>
           </div>
 
           {/* Contact Form */}
-          <div ref={formRef} className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200/50 relative overflow-hidden">
+          <Card className="bg-white/80 backdrop-blur-sm p-8 relative overflow-hidden">
             {/* Form glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#40DECF]/10 to-[#9DF4F2]/10 rounded-2xl blur-xl opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-            
+
             <div className="relative z-10">
               <h3 className="text-2xl font-bold text-[#1B473F] mb-6 flex items-center gap-3">
                 <Send className="h-6 w-6 text-[#40DECF]" />
@@ -353,98 +210,100 @@ export default function ContactSection() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="text-sm font-medium text-[#1B473F] mb-2 flex items-center gap-2">
+                    <Label htmlFor="name" className="text-[#1B473F] mb-2">
                       <User className="h-4 w-4" />
                       Nom complet *
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       type="text"
                       id="name"
                       name="name"
                       required
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#40DECF] focus:border-transparent transition-all duration-300 bg-white/70 backdrop-blur-sm"
+                      className="bg-white/70 backdrop-blur-sm focus:ring-[#40DECF] focus:border-[#40DECF]"
                       placeholder="Votre nom"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="text-sm font-medium text-[#1B473F] mb-2 flex items-center gap-2">
+                    <Label htmlFor="email" className="text-[#1B473F] mb-2">
                       <Mail className="h-4 w-4" />
                       Email *
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       type="email"
                       id="email"
                       name="email"
                       required
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#40DECF] focus:border-transparent transition-all duration-300 bg-white/70 backdrop-blur-sm"
+                      className="bg-white/70 backdrop-blur-sm focus:ring-[#40DECF] focus:border-[#40DECF]"
                       placeholder="votre@email.com"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="company" className="text-sm font-medium text-[#1B473F] mb-2 flex items-center gap-2">
+                  <Label htmlFor="company" className="text-[#1B473F] mb-2">
                     <Building className="h-4 w-4" />
                     Entreprise
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     type="text"
                     id="company"
                     name="company"
                     value={formData.company}
                     onChange={handleInputChange}
-                    className="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#40DECF] focus:border-transparent transition-all duration-300 bg-white/70 backdrop-blur-sm"
+                    className="bg-white/70 backdrop-blur-sm focus:ring-[#40DECF] focus:border-[#40DECF]"
                     placeholder="Nom de votre entreprise"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="project" className="block text-sm font-medium text-[#1B473F] mb-2">
+                  <Label htmlFor="project" className="text-[#1B473F] mb-2">
                     Type de projet *
-                  </label>
-                  <select
-                    id="project"
+                  </Label>
+                  <Select
                     name="project"
                     required
                     value={formData.project}
-                    onChange={handleInputChange}
-                    className="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#40DECF] focus:border-transparent transition-all duration-300 bg-white/70 backdrop-blur-sm"
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, project: value }))}
                   >
-                    <option value="">Sélectionnez un type de projet</option>
-                    <option value="site-vitrine">Site vitrine</option>
-                    <option value="app-web">Application web</option>
-                    <option value="app-mobile">Application mobile</option>
-                    <option value="erp">Solution ERP</option>
-                    <option value="autre">Autre</option>
-                  </select>
+                    <SelectTrigger className="w-full bg-white/70 backdrop-blur-sm focus:ring-[#40DECF] focus:border-[#40DECF]">
+                      <SelectValue placeholder="Sélectionnez un type de projet" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="site-vitrine">Site vitrine</SelectItem>
+                      <SelectItem value="app-web">Application web</SelectItem>
+                      <SelectItem value="app-mobile">Application mobile</SelectItem>
+                      <SelectItem value="erp">Solution ERP</SelectItem>
+                      <SelectItem value="autre">Autre</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="text-sm font-medium text-[#1B473F] mb-2 flex items-center gap-2">
+                  <Label htmlFor="message" className="text-[#1B473F] mb-2">
                     <MessageCircle className="h-4 w-4" />
                     Message *
-                  </label>
-                  <textarea
+                  </Label>
+                  <Textarea
                     id="message"
                     name="message"
                     required
                     rows={5}
                     value={formData.message}
                     onChange={handleInputChange}
-                    className="form-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#40DECF] focus:border-transparent transition-all duration-300 resize-none bg-white/70 backdrop-blur-sm"
+                    className="bg-white/70 backdrop-blur-sm focus:ring-[#40DECF] focus:border-[#40DECF] resize-none"
                     placeholder="Décrivez votre projet et vos besoins..."
                   />
                 </div>
 
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-[#40DECF] to-[#82CFCF] text-white px-8 py-4 rounded-lg font-semibold hover:from-[#1B473F] hover:to-[#4E9B94] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-[#40DECF] to-[#82CFCF] text-white px-8 py-4 font-semibold hover:from-[#1B473F] hover:to-[#4E9B94] shadow-lg hover:shadow-xl gap-2 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
@@ -453,17 +312,14 @@ export default function ContactSection() {
                     </>
                   ) : (
                     <>
-                      <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      <Send className="h-5 w-5" />
                       <span>Envoyer le message</span>
                     </>
                   )}
-                  
-                  {/* Button shimmer effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-                </button>
+                </Button>
               </form>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     </section>
