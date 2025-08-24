@@ -282,7 +282,6 @@ export default function ProjectsSection() {
           {Object.entries(projects).map(([category, projectList], categoryIndex) => {
             const IconComponent = categoryIcons[category as keyof typeof categoryIcons];
             const colorGradient = categoryColors[category as keyof typeof categoryColors];
-            const glowGradient = categoryGlows[category as keyof typeof categoryGlows];
             const categoryTitle = categoryTitles[category as keyof typeof categoryTitles];
 
             return (
