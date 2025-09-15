@@ -1,8 +1,11 @@
 "use client";
 
 import { Github, Linkedin, Twitter, Mail, ArrowUp } from "lucide-react";
+import { useWebsiteConfig } from "@/hooks/useWebsiteConfig";
 
 export default function Footer() {
+  const config = useWebsiteConfig();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -30,34 +33,33 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center mb-6">
               <div className="text-3xl font-bold text-gradient-white">
-                HRak Tech
+                {config.company.name}
               </div>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed mb-6 max-w-md">
-              Votre partenaire de confiance pour transformer vos idées en solutions digitales innovantes. 
-              Expertise technique, approche collaborative, résultats durables.
+              {config.footer.description}
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href={config.company.social.github}
                 className="bg-white/10 hover:bg-[#40DECF] p-3 rounded-full transition-all duration-300 hover:scale-110"
               >
                 <Github className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href={config.company.social.linkedin}
                 className="bg-white/10 hover:bg-[#40DECF] p-3 rounded-full transition-all duration-300 hover:scale-110"
               >
                 <Linkedin className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href={config.company.social.twitter}
                 className="bg-white/10 hover:bg-[#40DECF] p-3 rounded-full transition-all duration-300 hover:scale-110"
               >
                 <Twitter className="h-5 w-5" />
               </a>
               <a
-                href="mailto:contact@hraktech.com"
+                href={`mailto:${config.company.contact.email}`}
                 className="bg-white/10 hover:bg-[#40DECF] p-3 rounded-full transition-all duration-300 hover:scale-110"
               >
                 <Mail className="h-5 w-5" />
@@ -69,46 +71,16 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold text-[#40DECF] mb-6">Navigation</h3>
             <ul className="space-y-3">
-              <li>
-                <button
-                  onClick={() => scrollToSection("services")}
-                  className="text-gray-300 hover:text-[#40DECF] transition-colors duration-300 text-left"
-                >
-                  Services
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("technologies")}
-                  className="text-gray-300 hover:text-[#40DECF] transition-colors duration-300 text-left"
-                >
-                  Technologies
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("projects")}
-                  className="text-gray-300 hover:text-[#40DECF] transition-colors duration-300 text-left"
-                >
-                  Projets
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("testimonials")}
-                  className="text-gray-300 hover:text-[#40DECF] transition-colors duration-300 text-left"
-                >
-                  Témoignages
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("contact")}
-                  className="text-gray-300 hover:text-[#40DECF] transition-colors duration-300 text-left"
-                >
-                  Contact
-                </button>
-              </li>
+              {config.footer.navigation.map((item) => (
+                <li key={item.section}>
+                  <button
+                    onClick={() => scrollToSection(item.section)}
+                    className="text-gray-300 hover:text-[#40DECF] transition-colors duration-300 text-left"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -116,21 +88,11 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold text-[#40DECF] mb-6">Services</h3>
             <ul className="space-y-3">
-              <li>
-                <span className="text-gray-300">Sites vitrines</span>
-              </li>
-              <li>
-                <span className="text-gray-300">Applications web</span>
-              </li>
-              <li>
-                <span className="text-gray-300">Apps mobiles</span>
-              </li>
-              <li>
-                <span className="text-gray-300">Solutions ERP</span>
-              </li>
-              <li>
-                <span className="text-gray-300">Consulting</span>
-              </li>
+              {config.footer.services.map((service) => (
+                <li key={service}>
+                  <span className="text-gray-300">{service}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -139,18 +101,18 @@ export default function Footer() {
         <div className="border-t border-white/10 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2025 HRak Tech. Tous droits réservés.
+              {config.footer.copyright}
             </div>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-[#40DECF] transition-colors duration-300">
-                Mentions légales
-              </a>
-              <a href="#" className="text-gray-400 hover:text-[#40DECF] transition-colors duration-300">
-                Politique de confidentialité
-              </a>
-              <a href="#" className="text-gray-400 hover:text-[#40DECF] transition-colors duration-300">
-                CGV
-              </a>
+              {config.footer.legal.map((legal) => (
+                <a 
+                  key={legal.label}
+                  href={legal.url} 
+                  className="text-gray-400 hover:text-[#40DECF] transition-colors duration-300"
+                >
+                  {legal.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>

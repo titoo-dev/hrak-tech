@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useWebsiteConfig } from "@/hooks/useWebsiteConfig";
 
 interface NavButtonProps {
   onClick: () => void;
@@ -32,6 +33,7 @@ function NavButton({ onClick, isScrolled, children, className }: NavButtonProps)
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const config = useWebsiteConfig();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,8 +66,8 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 z-10">
             <Image
-              src="/logo.png"
-              alt="HRak Tech"
+              src={config.company.logo}
+              alt={config.company.name}
               width={120}
               height={40}
               className={cn(
@@ -81,20 +83,16 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             <div className="flex items-center space-x-1 bg-white/10 backdrop-blur-sm rounded-full p-1 border border-white/20">
-              <NavButton
-                onClick={() => scrollToSection("services")}
-                isScrolled={isScrolled}
-                className="rounded-full px-6 py-2.5"
-              >
-                Services
-              </NavButton>
-              <NavButton
-                onClick={() => scrollToSection("technologies")}
-                isScrolled={isScrolled}
-                className="rounded-full px-6 py-2.5"
-              >
-                Technologies
-              </NavButton>
+              {config.navigation.items.map((item) => (
+                <NavButton
+                  key={item.section}
+                  onClick={() => scrollToSection(item.section)}
+                  isScrolled={isScrolled}
+                  className="rounded-full px-6 py-2.5"
+                >
+                  {item.label}
+                </NavButton>
+              ))}
             </div>
 
             {/* Contact CTA Button */}
@@ -107,7 +105,7 @@ export default function Navbar() {
                   : "bg-white/20 text-white backdrop-blur-sm border border-white/30 hover:bg-white/30"
               )}
             >
-              Nous contacter
+              {config.navigation.cta.text}
             </button>
           </div>
 
@@ -135,23 +133,20 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-4 right-4 mt-2">
             <div className="bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200/20 shadow-xl shadow-black/5 p-2 space-y-1">
-              <MobileNavButton
-                onClick={() => scrollToSection("services")}
-                icon="🚀"
-              >
-                Services
-              </MobileNavButton>
-              <MobileNavButton
-                onClick={() => scrollToSection("technologies")}
-                icon="⚡"
-              >
-                Technologies
-              </MobileNavButton>
+              {config.navigation.items.map((item, index) => (
+                <MobileNavButton
+                  key={item.section}
+                  onClick={() => scrollToSection(item.section)}
+                  icon={index === 0 ? "🚀" : "⚡"}
+                >
+                  {item.label}
+                </MobileNavButton>
+              ))}
               <button
                 onClick={() => scrollToSection("contact")}
                 className="w-full mt-3 p-4 bg-gradient-to-r from-[#40DECF] to-[#1B473F] text-white rounded-xl font-semibold transition-all duration-300 hover:scale-[0.98] active:scale-95"
               >
-                Nous contacter
+                {config.navigation.cta.text}
               </button>
             </div>
           </div>

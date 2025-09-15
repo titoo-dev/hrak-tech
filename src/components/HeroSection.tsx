@@ -4,6 +4,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { useWebsiteConfig } from "@/hooks/useWebsiteConfig";
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
@@ -15,6 +16,7 @@ export default function HeroSection() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
   const orbsRef = useRef<HTMLDivElement[]>([]);
+  const config = useWebsiteConfig();
 
   useGSAP(() => {
     // Check for reduced motion preference
@@ -226,31 +228,23 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-[#40DECF] text-sm font-medium"
           >
             <Sparkles className="h-4 w-4" />
-            <span>Innovation Technologique</span>
+            <span>{config.hero.badge.text}</span>
             <Sparkles className="h-4 w-4" />
           </div>
         </div>
 
         {/* Main heading with stunning typography */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-          <span 
-            ref={el => { if (el) titleWordsRef.current[0] = el; }}
-            className="inline-block"
-          >
-            Oui,
-          </span>{" "}
-          <span 
-            ref={el => { if (el) titleWordsRef.current[1] = el; }}
-            className="inline-block"
-          >
-            votre
-          </span>{" "}
-          <span 
-            ref={el => { if (el) titleWordsRef.current[2] = el; }}
-            className="inline-block"
-          >
-            projet
-          </span>
+          {config.hero.title.words.map((word, index) => (
+            <span key={word}>
+              <span 
+                ref={el => { if (el) titleWordsRef.current[index] = el; }}
+                className="inline-block"
+              >
+                {word}
+              </span>{index < config.hero.title.words.length - 1 ? " " : ""}
+            </span>
+          ))}
           <br />
           <span 
             ref={el => { if (el) titleWordsRef.current[3] = el; }}
@@ -264,7 +258,7 @@ export default function HeroSection() {
               className="gradient-text bg-gradient-to-r from-[#40DECF] via-[#9DF4F2] to-[#40DECF] bg-clip-text text-transparent"
               style={{backgroundSize: '200% 200%'}}
             >
-              réalisable
+              {config.hero.title.highlight}
             </span>
             <div 
               ref={underlineRef}
@@ -279,10 +273,10 @@ export default function HeroSection() {
           className="max-w-3xl mx-auto mb-10"
         >
           <p className="text-lg md:text-xl lg:text-2xl text-gray-100 font-light leading-relaxed mb-3">
-            Discutons ensemble pour voir ce que notre équipe peut vous apporter.
+            {config.hero.subtitle.main}
           </p>
           <p className="text-base md:text-lg text-[#9DF4F2] font-medium">
-            Solutions digitales sur mesure • Innovation • Excellence
+            {config.hero.subtitle.secondary}
           </p>
         </div>
 
@@ -296,7 +290,7 @@ export default function HeroSection() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#40DECF] to-[#1B473F] opacity-100 group-hover:opacity-90 transition-opacity"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             
-            <span className="relative">Discutons</span>
+            <span className="relative">{config.hero.cta.text}</span>
             <ArrowRight className="relative h-5 w-5 group-hover:translate-x-2 transition-transform duration-300" />
           </button>
         </div>
@@ -304,18 +298,12 @@ export default function HeroSection() {
         {/* Trust indicators */}
         <div ref={trustRef} className="mt-12">
           <div className="flex flex-wrap justify-center items-center gap-6 text-white/60 text-xs md:text-sm">
-            <div className="flex items-center gap-2">
-              <div className="trust-dot w-2 h-2 bg-[#40DECF] rounded-full"></div>
-              <span>+50 Projets Réalisés</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="trust-dot w-2 h-2 bg-[#9DF4F2] rounded-full"></div>
-              <span>Technologies Modernes</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="trust-dot w-2 h-2 bg-[#40DECF] rounded-full"></div>
-              <span>Support 24/7</span>
-            </div>
+            {config.company.stats.map((stat, index) => (
+              <div key={stat.label} className="flex items-center gap-2">
+                <div className={`trust-dot w-2 h-2 ${index % 2 === 0 ? 'bg-[#40DECF]' : 'bg-[#9DF4F2]'} rounded-full`}></div>
+                <span>{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

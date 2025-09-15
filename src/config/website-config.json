@@ -1,0 +1,397 @@
+{
+  "company": {
+    "name": "HRak Tech",
+    "tagline": "Solutions Digitales Innovantes",
+    "description": "Votre partenaire de confiance pour transformer vos idées en solutions digitales innovantes. Expertise technique, approche collaborative, résultats durables.",
+    "logo": "/logo.png",
+    "logoWithBg": "/logo-with-bg.png",
+    "contact": {
+      "email": "contact@hraktech.com",
+      "phone": "+33 1 23 45 67 89",
+      "address": "Paris, France"
+    },
+    "social": {
+      "github": "#",
+      "linkedin": "#",
+      "twitter": "#",
+      "twitterHandle": "@hraktech"
+    },
+    "stats": [
+      {
+        "label": "+50 Projets Réalisés",
+        "icon": "dot"
+      },
+      {
+        "label": "Technologies Modernes",
+        "icon": "dot"
+      },
+      {
+        "label": "Support 24/7",
+        "icon": "dot"
+      }
+    ]
+  },
+  "seo": {
+    "title": "HRak Tech - Solutions Digitales Innovantes | Développement Web, Mobile & ERP",
+    "description": "HRak Tech transforme vos idées en solutions digitales performantes. Expertise en développement web (Next.js), applications mobiles (Flutter), et ERP (Odoo). Contactez-nous pour concrétiser votre projet.",
+    "keywords": ["développement web", "application mobile", "ERP Odoo", "Next.js", "Flutter", "solutions digitales", "transformation numérique"],
+    "author": "HRak Tech",
+    "url": "https://hraktech.com",
+    "locale": "fr_FR",
+    "openGraph": {
+      "title": "HRak Tech - Solutions Digitales Innovantes",
+      "description": "Transformez vos idées en solutions digitales performantes avec HRak Tech. Développement web, mobile et ERP.",
+      "image": "/logo-with-bg.png",
+      "imageAlt": "HRak Tech - Solutions Digitales Innovantes"
+    }
+  },
+  "hero": {
+    "badge": {
+      "text": "Innovation Technologique",
+      "icon": "sparkles"
+    },
+    "title": {
+      "words": ["Oui,", "votre", "projet"],
+      "highlight": "réalisable"
+    },
+    "subtitle": {
+      "main": "Discutons ensemble pour voir ce que notre équipe peut vous apporter.",
+      "secondary": "Solutions digitales sur mesure • Innovation • Excellence"
+    },
+    "cta": {
+      "text": "Discutons",
+      "action": "scrollToContact"
+    }
+  },
+  "services": {
+    "badge": "Nos Services",
+    "title": {
+      "main": "Solutions",
+      "highlight": "Digitales",
+      "subtitle": "Innovantes"
+    },
+    "description": "Nous transformons vos idées en solutions digitales performantes grâce à notre expertise technique et notre approche collaborative.",
+    "items": [
+      {
+        "id": "website",
+        "icon": "globe",
+        "title": "Développement de sites vitrines",
+        "description": "Sites web modernes et responsive qui reflètent votre image de marque et attirent vos clients.",
+        "color": "from-[#40DECF] to-[#82CFCF]",
+        "bgColor": "from-[#40DECF]/20 to-[#82CFCF]/10"
+      },
+      {
+        "id": "webapp",
+        "icon": "monitor",
+        "title": "Développement d'applications web",
+        "description": "Applications web performantes et intuitives pour digitaliser vos processus métier.",
+        "color": "from-[#1B473F] to-[#4E9B94]",
+        "bgColor": "from-[#1B473F]/20 to-[#4E9B94]/10"
+      },
+      {
+        "id": "mobile",
+        "icon": "smartphone",
+        "title": "Applications mobiles (Android & iOS)",
+        "description": "Applications mobiles natives et cross-platform pour toucher vos utilisateurs partout.",
+        "color": "from-[#4E9B94] to-[#9DF4F2]",
+        "bgColor": "from-[#4E9B94]/20 to-[#9DF4F2]/10"
+      },
+      {
+        "id": "erp",
+        "icon": "settings",
+        "title": "ERP (Odoo)",
+        "description": "Solutions ERP personnalisées avec Odoo pour optimiser la gestion de votre entreprise.",
+        "color": "from-[#82CFCF] to-[#40DECF]",
+        "bgColor": "from-[#82CFCF]/20 to-[#40DECF]/10"
+      }
+    ],
+    "cta": {
+      "text": "Parlons de votre projet",
+      "action": "scrollToContact"
+    }
+  },
+  "technologies": {
+    "badge": "Technologies",
+    "title": {
+      "main": "Stack",
+      "highlight": "Technologique",
+      "subtitle": "Moderne"
+    },
+    "description": "Nous maîtrisons les technologies les plus avancées pour vous offrir des solutions performantes et durables.",
+    "items": [
+      {
+        "name": "Next.js",
+        "description": "Framework React pour des applications web performantes et SEO-friendly",
+        "logo": "⚛️",
+        "color": "from-black to-gray-800",
+        "glowColor": "from-blue-500/20 to-cyan-500/20",
+        "accent": "#61dafb"
+      },
+      {
+        "name": "NestJS",
+        "description": "Framework Node.js évolutif pour construire des APIs robustes et maintenables",
+        "logo": "🚀",
+        "color": "from-red-500 to-pink-600",
+        "glowColor": "from-red-500/20 to-pink-500/20",
+        "accent": "#e0234e"
+      },
+      {
+        "name": "Flutter",
+        "description": "SDK de Google pour créer des applications mobiles natives multiplateformes",
+        "logo": "📱",
+        "color": "from-blue-400 to-blue-600",
+        "glowColor": "from-blue-400/20 to-cyan-400/20",
+        "accent": "#0175c2"
+      },
+      {
+        "name": "Odoo",
+        "description": "Plateforme ERP open-source pour gérer tous les aspects de votre entreprise",
+        "logo": "🏢",
+        "color": "from-purple-500 to-indigo-600",
+        "glowColor": "from-purple-500/20 to-indigo-500/20",
+        "accent": "#875a7b"
+      }
+    ],
+    "additionalInfo": {
+      "title": "Et bien plus encore...",
+      "description": "Notre équipe se forme continuellement aux dernières technologies pour vous proposer toujours les meilleures solutions.",
+      "technologies": "TypeScript, PostgreSQL, MongoDB, Docker, AWS..."
+    }
+  },
+  "projects": {
+    "badge": "Portfolio",
+    "title": {
+      "main": "Projets",
+      "highlight": "Réalisés",
+      "subtitle": "avec Excellence"
+    },
+    "description": "Découvrez un aperçu de nos réalisations innovantes qui témoignent de notre expertise et de notre engagement envers l'excellence.",
+    "categories": {
+      "mobile": {
+        "title": "Applications Mobiles",
+        "icon": "smartphone",
+        "color": "from-[#40DECF] to-[#82CFCF]",
+        "glowColor": "from-[#40DECF]/20 to-[#82CFCF]/10",
+        "projects": [
+          {
+            "name": "La Parole",
+            "description": "Application de streaming religieux"
+          },
+          {
+            "name": "Ariary",
+            "description": "Application de gestion financière"
+          },
+          {
+            "name": "Devinette",
+            "description": "Jeu de devinettes interactif"
+          },
+          {
+            "name": "Sedera",
+            "description": "Plateforme communautaire"
+          },
+          {
+            "name": "Ezango",
+            "description": "Application de e-commerce"
+          }
+        ]
+      },
+      "web": {
+        "title": "Sites Web",
+        "icon": "globe",
+        "color": "from-[#1B473F] to-[#4E9B94]",
+        "glowColor": "from-[#1B473F]/20 to-[#4E9B94]/10",
+        "projects": [
+          {
+            "name": "Ezango",
+            "url": "https://ezango.app",
+            "description": "Plateforme e-commerce moderne et intuitive"
+          },
+          {
+            "name": "L'Aigle de Libreville",
+            "url": "https://laigledelibreville.com",
+            "description": "Site web institutionnel et informatif"
+          },
+          {
+            "name": "Mes Convictions",
+            "url": "https://mesconvictions.com",
+            "description": "Plateforme d'expression et de débat"
+          }
+        ]
+      },
+      "erp": {
+        "title": "Solutions ERP",
+        "icon": "building",
+        "color": "from-[#4E9B94] to-[#9DF4F2]",
+        "glowColor": "from-[#4E9B94]/20 to-[#9DF4F2]/10",
+        "projects": [
+          {
+            "name": "Im'tsar",
+            "description": "Système ERP complet pour la gestion d'entreprise"
+          }
+        ]
+      }
+    },
+    "cta": {
+      "title": "Votre projet sera le prochain",
+      "description": "Rejoignez nos clients satisfaits et concrétisez vos ambitions digitales avec notre expertise reconnue.",
+      "buttonText": "Démarrer mon projet",
+      "action": "scrollToContact"
+    }
+  },
+  "testimonials": {
+    "badge": "Témoignages",
+    "title": {
+      "main": "Clients",
+      "highlight": "Satisfaits",
+      "subtitle": "Témoignent"
+    },
+    "description": "Découvrez ce que nos clients pensent de notre travail exceptionnel et de notre accompagnement personnalisé.",
+    "items": [
+      {
+        "id": 1,
+        "name": "Marie Dubois",
+        "position": "Directrice Marketing",
+        "company": "TechStart",
+        "image": "👩‍💼",
+        "rating": 5,
+        "comment": "HRak Tech a transformé notre vision en une application mobile exceptionnelle. Leur expertise technique et leur approche collaborative ont dépassé nos attentes. Je recommande vivement leurs services !"
+      },
+      {
+        "id": 2,
+        "name": "Jean-Paul Martin",
+        "position": "CEO",
+        "company": "InnovCorp",
+        "image": "👨‍💼",
+        "rating": 5,
+        "comment": "L'équipe de HRak Tech a développé notre site web avec un professionnalisme remarquable. Le résultat est à la hauteur de nos ambitions : moderne, performant et parfaitement adapté à nos besoins."
+      },
+      {
+        "id": 3,
+        "name": "Amina Hassan",
+        "position": "Responsable IT",
+        "company": "GlobalTech",
+        "image": "👩‍💻",
+        "rating": 5,
+        "comment": "Notre système ERP Odoo développé par HRak Tech a révolutionné notre gestion d'entreprise. Implementation fluide, formation complète, support réactif. Une collaboration exemplaire !"
+      },
+      {
+        "id": 4,
+        "name": "David Chen",
+        "position": "Founder",
+        "company": "StartupLab",
+        "image": "👨‍🔬",
+        "rating": 5,
+        "comment": "HRak Tech nous a accompagnés de l'idée à la réalisation. Leur expertise en développement web et mobile, combinée à leur compréhension de nos enjeux business, fait toute la différence."
+      }
+    ]
+  },
+  "contact": {
+    "badge": "Contact",
+    "title": {
+      "main": "Discutons de",
+      "highlight": "Votre Projet",
+      "subtitle": "Ensemble"
+    },
+    "description": "Prêt à concrétiser votre projet ? Contactez-nous pour discuter de vos besoins et découvrir comment nous pouvons vous aider à réussir votre transformation digitale.",
+    "info": {
+      "title": "Parlons de votre projet",
+      "description": "Que vous ayez une idée précise ou que vous souhaitiez simplement explorer les possibilités, notre équipe est là pour vous accompagner à chaque étape de votre transformation digitale.",
+      "guarantee": {
+        "title": "Réponse garantie sous 24h",
+        "description": "Nous nous engageons à vous répondre rapidement pour que votre projet puisse démarrer dans les meilleures conditions."
+      }
+    },
+    "form": {
+      "title": "Envoyez-nous un message",
+      "fields": {
+        "name": {
+          "label": "Nom complet",
+          "placeholder": "Votre nom",
+          "required": true
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "votre@email.com",
+          "required": true
+        },
+        "company": {
+          "label": "Entreprise",
+          "placeholder": "Nom de votre entreprise",
+          "required": false
+        },
+        "project": {
+          "label": "Type de projet",
+          "placeholder": "Sélectionnez un type de projet",
+          "required": true,
+          "options": [
+            { "value": "site-vitrine", "label": "Site vitrine" },
+            { "value": "app-web", "label": "Application web" },
+            { "value": "app-mobile", "label": "Application mobile" },
+            { "value": "erp", "label": "Solution ERP" },
+            { "value": "autre", "label": "Autre" }
+          ]
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Décrivez votre projet et vos besoins...",
+          "required": true
+        }
+      },
+      "submitButton": {
+        "text": "Envoyer le message",
+        "loadingText": "Envoi en cours..."
+      }
+    },
+    "success": {
+      "title": "Message envoyé avec succès !",
+      "description": "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais pour discuter de votre projet."
+    }
+  },
+  "footer": {
+    "description": "Votre partenaire de confiance pour transformer vos idées en solutions digitales innovantes. Expertise technique, approche collaborative, résultats durables.",
+    "navigation": [
+      { "label": "Services", "section": "services" },
+      { "label": "Technologies", "section": "technologies" },
+      { "label": "Projets", "section": "projects" },
+      { "label": "Témoignages", "section": "testimonials" },
+      { "label": "Contact", "section": "contact" }
+    ],
+    "services": [
+      "Sites vitrines",
+      "Applications web",
+      "Apps mobiles",
+      "Solutions ERP",
+      "Consulting"
+    ],
+    "legal": [
+      { "label": "Mentions légales", "url": "#" },
+      { "label": "Politique de confidentialité", "url": "#" },
+      { "label": "CGV", "url": "#" }
+    ],
+    "copyright": "© 2025 HRak Tech. Tous droits réservés."
+  },
+  "navigation": {
+    "items": [
+      { "label": "Services", "section": "services" },
+      { "label": "Technologies", "section": "technologies" }
+    ],
+    "cta": {
+      "text": "Nous contacter",
+      "action": "scrollToContact"
+    }
+  },
+  "theme": {
+    "colors": {
+      "primary": "#40DECF",
+      "primaryLight": "#9DF4F2",
+      "primaryDark": "#1B473F",
+      "secondary": "#82CFCF",
+      "accent": "#4E9B94"
+    },
+    "gradients": {
+      "primary": "from-[#40DECF] to-[#82CFCF]",
+      "secondary": "from-[#1B473F] to-[#4E9B94]",
+      "accent": "from-[#4E9B94] to-[#9DF4F2]"
+    }
+  }
+}
